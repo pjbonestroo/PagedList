@@ -1,0 +1,34 @@
+
+.container {
+    width: 80%;
+}
+
+.table input {
+    width: 100px;
+}
+
+.pagedListColumnHeader {
+    vertical-align: top;
+}
+
+.pagedListColumnRow {
+    vertical-align: top;
+}
+
+.subPagedListTable {
+    width: 100%;
+}
+
+.subPagedListCell1 {
+    width: 30px;
+}
+
+.subPagedListCell2 {
+    background-color: #FFFFFF !important;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.subPagedListTd {
+    background-color: #7AA5CC; /*transparent; */ /* #a5b9cc; */ /*  #7AA5CC;  */
+}

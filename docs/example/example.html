@@ -1,0 +1,174 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="static/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static/css/example.css">
+    <script type="text/javascript" src="static/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="static/js/exampleData.js"></script>
+    <!--<script type="text/javascript" src="static/bootstrap/js/bootstrap.min.js"></script>-->
+    <script src='static/js/core.min.js'></script>
+    <!-- to support IE, even if pagedList is not minified... -->
+    <script src='static/js/pagedList.min.js'></script>
+</head>
+
+<body>
+    <div>
+        <div class='container'>
+            <h1>Example of PagedList
+            </h1>
+            <div id="myList"></div>
+        </div>
+    </div>
+
+</body>
+<script>
+    var myList = new pagedList.PagedList('#myList', ''); // no url is specified, since we use a data generator (so we don't need a server)
+
+    //
+    // Example for inline editing
+    //
+    var InlineEditElement = function (item, fieldname, saveFunction, saveOnFocusLossed) {
+        var result = document.createElement("div");
+        var textSpan = document.createElement("span");
+        var inputElement = document.createElement("input");
+        var showText = function () {
+            result.innerHTML = "";
+            result.appendChild(textSpan);
+            if (item[fieldname] != "") {
+                textSpan.innerHTML = item[fieldname];
+            } else {
+                textSpan.innerHTML = "-";
+            }
+        }
+        var showInput = function () {
+            result.innerHTML = ""; result.appendChild(inputElement);
+            var text = item[fieldname].toString();
+            inputElement.value = text;
+            inputElement.style = "width: " + Math.max(80, text.length * 8) + "px;";
+            inputElement.onblur = function (event) { // when focuss lossed
+                if (saveOnFocusLossed) {
+                    event.stopPropagation();
+                    saveFunction(inputElement.value);
+                }
+                showText();
+            }
+            inputElement.focus();
+        }
+        textSpan.onclick = showInput;
+        inputElement.addEventListener("keyup", function (event) {
+            event.stopPropagation();
+            if (event.keyCode == 13) { // enter
+                saveFunction(inputElement.value);
+            } else if (event.keyCode == 27) { // escape
+                inputElement.onblur = function () { };
+                showText();
+            }
+        });
+        showText();
+        return result;
+    };
+
+    myList.pageSize = 8;
+    myList.addColumn("Firstname", "First name").enableFilter().enableSort()
+        .itemToElement(function (item) {
+            var fieldname = "Firstname";
+            var saveFunction = function (value) {
+                myList.getServer().getItem(item.Id)[fieldname] = value;
+                myList.refresh();
+            }
+            return InlineEditElement(item, fieldname, saveFunction, true);
+        });
+    myList.addColumn("Lastname", "Last name", 'col-md-1').enableFilter().enableSort()
+        .itemToElement(function (item) {
+            var fieldname = "Lastname";
+            var saveFunction = function (value) {
+                myList.getServer().getItem(item.Id)[fieldname] = value;
+                myList.refresh();
+            }
+            return InlineEditElement(item, fieldname, saveFunction);
+        });
+    myList.addColumn("Address", "Address").enableFilter().enableSort()
+        .itemToElement(function (item) {
+            var fieldname = "Address";
+            var saveFunction = function (value) {
+                myList.getServer().getItem(item.Id)[fieldname] = value;
+                myList.refresh();
+            }
+            return InlineEditElement(item, fieldname, saveFunction);
+        });
+    myList.addColumn("City", "City").enableSort()
+        .itemToHtml(function (item) {
+            return item.City;
+        });
+    myList.addColumn("Checkbox", "Check")
+        .itemToElement(function (item) {
+            el = document.createElement("input");
+            el.type = "checkbox";
+            return el;
+        });
+    myList.addColumn("Phone", "Phone").enableFilter().enableSort()
+        .itemToHtml(function (item) {
+            return item.Phone;
+        }).onExpandItem(function (item) {
+            div = document.createElement("div");
+            div.innerHTML = "Extra info for phone number " + item.Phone + " goes here.";
+            return div;
+        });
+    myList.addButton('Call', 'Call', 'btn btn-success')
+        .onclick(function (item) {
+            alert("Call " + item.Firstname + " " + item.Lastname + " on number " + item.Phone);
+        });
+    myList.addButton('Delete', 'Delete', 'btn btn-danger')
+        .onclick(function (item) {
+            myList.getServer().deleteItem(item.Id);
+            myList.refresh();
+        }).showIf(function (item) {
+            return item.Firstname.length == 5
+        });
+
+    // styling
+    myList.getStyling().rowStyles(function (item) {
+        var result = "";
+        if (item.Firstname.length == 5) {
+            result = "text-decoration: line-through;";
+        }
+        return result;
+    });
+
+    myList.getStyling().rowClasses(function (item) {
+        var result = "";
+        if (item.Firstname.length == 5) {
+            result = "text-uppercase bg-warning";
+        }
+        return result;
+    });
+
+    //myList.getTopPager().getTable().style = "height: 80px";
+
+    //myList.setClassExpanded("");
+    //myList.setClassCollapsed("");
+    //myList.setClassAscending("");
+    //myList.setClassDescending("");
+    //myList.disablePagination();
+    //myList.getTopPager().disable();
+
+    //var clickFunction = function(item, evt){
+    //    console.log(item);
+    //    console.log(evt);
+    //}
+    //clickFunction = myList.addRowListener("click", clickFunction)
+    //myList.removeRowListener("click", clickFunction)
+
+    // for test purpose we use a fake server
+    var server = myList.getServer();
+    exampleData.forEach(function (d) {
+        server.addData(d);
+    }
+    );
+    //
+
+    myList.refresh();
+
+</script>
+
+</html>

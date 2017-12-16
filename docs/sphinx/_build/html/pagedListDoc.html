@@ -1,0 +1,1125 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>PagedList’s documentation &#8212; PagedList 0.0.2 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="pagedlist-s-documentation">
+<h1>PagedList’s documentation<a class="headerlink" href="#pagedlist-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<p>PagedList is a javascript library to create html lists (or tables) with pagination and auto rendering features.
+Columns and buttons can be configured.</p>
+<p>Columns are configurable to enable sorting and filtering.
+Buttons are default shown for each row, but can be configured to be visible dependent on row data.
+Callback functions can be applied on buttons. The row data will be passed to the callback function when a button is clicked.</p>
+<p>The list gets refreshed automatically when the user changes sorting or filtering (or browse to an other page). Refreshing can also be done manually by calling <code class="code docutils literal"><span class="pre">myList.refresh()</span></code></p>
+<p>Columns can be configured to expand and collapse, which inserts and deletes an html-element below the clicked row. See <a class="reference internal" href="#pagedList.PagedListColumn.onExpandItem" title="pagedList.PagedListColumn.onExpandItem"><code class="xref any py py-meth docutils literal"><span class="pre">onExpandItem</span></code></a></p>
+<p>Go to <a class="reference internal" href="#installation"><span class="std std-ref">Installation</span></a> and <a class="reference internal" href="#codeexamples"><span class="std std-ref">Code examples</span></a> for a quick start.</p>
+</div>
+<div class="section" id="how-does-it-look">
+<h1>How does it look<a class="headerlink" href="#how-does-it-look" title="Permalink to this headline">¶</a></h1>
+<p>Styling can by fully customized. Default styling looks like:</p>
+<img alt="_images/example.png" src="_images/example.png" />
+</div>
+<div class="section" id="installation">
+<span id="id1"></span><h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>Add dependencies to your html file:</p>
+<ul class="simple">
+<li>jQuery (<a class="reference external" href="https://jquery.com/">https://jquery.com/</a>)</li>
+<li>Bootstrap (<a class="reference external" href="http://getbootstrap.com/">http://getbootstrap.com/</a>)</li>
+</ul>
+<p>Add <code class="code docutils literal"><span class="pre">pagedList.min.js</span></code> or <code class="code docutils literal"><span class="pre">pagedList.js</span></code> to your html file, like:</p>
+<div class="highlight-html"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;pagedList.min.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="code-examples">
+<span id="codeexamples"></span><h1>Code examples<a class="headerlink" href="#code-examples" title="Permalink to this headline">¶</a></h1>
+<p>Add a new list to an existing html element with <code class="code docutils literal"><span class="pre">id=myListId</span></code>, using <a class="reference internal" href="#pagedList.PagedList" title="pagedList.PagedList"><code class="xref any py py-class docutils literal"><span class="pre">PagedList</span></code></a>:</p>
+<div class="highlight-html"><div class="highlight"><pre><span></span>var myList = new pagedList.PagedList(
+    &quot;#myListId&quot;, &quot;http://myURL/getListItems&quot;);
+</pre></div>
+</div>
+<p>Add a column with sorting and filtering capabilities, using <a class="reference internal" href="#pagedList.PagedList.addColumn" title="pagedList.PagedList.addColumn"><code class="xref any py py-meth docutils literal"><span class="pre">addColumn</span></code></a>:</p>
+<div class="highlight-html"><div class="highlight"><pre><span></span>var column_one = myList.addColumn(&quot;Name&quot;, &quot;Name&quot;)
+     .enableFilter()
+     .enableSort();
+</pre></div>
+</div>
+<p>Define how the column content will be rendered, based on the row data, using <a class="reference internal" href="#pagedList.PagedListColumn.itemToHtml" title="pagedList.PagedListColumn.itemToHtml"><code class="xref any py py-meth docutils literal"><span class="pre">itemToHtml</span></code></a> (alternatively use <a class="reference internal" href="#pagedList.PagedListColumn.itemToElement" title="pagedList.PagedListColumn.itemToElement"><code class="xref any py py-meth docutils literal"><span class="pre">itemToElement</span></code></a>):</p>
+<div class="highlight-html"><div class="highlight"><pre><span></span>column_one.itemToHtml(function (item) {
+     return &quot;<span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>&quot; + item.Name + &quot;<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>&quot;;
+ });
+</pre></div>
+</div>
+<p>Add a button to the list, including style classes, which will be visible dependent on row data, using <a class="reference internal" href="#pagedList.PagedList.addButton" title="pagedList.PagedList.addButton"><code class="xref any py py-meth docutils literal"><span class="pre">addButton</span></code></a>:</p>
+<div class="highlight-html"><div class="highlight"><pre><span></span>myList.addButton(&quot;Edit&quot;, &quot;Edit&quot;, &quot;btn btn-primary btn-xs&quot;)
+     .onclick(function (item) {
+         console.log(&quot;Todo: edit item&quot;);
+     }).showIf(function (item) {
+         return item.CanEdit == true;
+     });
+</pre></div>
+</div>
+<p>For more examples, download the standalone example page, which shows a PagedList with data from a fake server.</p>
+</div>
+<div class="section" id="module-pagedList">
+<span id="globals"></span><h1>Globals<a class="headerlink" href="#module-pagedList" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="pagedList.addDefaultButton">
+<code class="descclassname">pagedList.</code><code class="descname">addDefaultButton</code><span class="sig-paren">(</span><em>id</em>, <em>name</em>, <em>styleClass</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.addDefaultButton" title="Permalink to this definition">¶</a></dt>
+<dd><p>Configure a global button to the pagedList module. See also <a class="reference internal" href="#pagedList.PagedList.addDefaultButtons" title="pagedList.PagedList.addDefaultButtons"><code class="xref any py py-meth docutils literal"><span class="pre">addDefaultButtons</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>id</strong> – self chosen id for the default button to be created. Must be unique. Example: “Select”.</li>
+<li><strong>name</strong> – text to show on the button. Example: “Select now!”</li>
+<li><strong>styleClass</strong> – html style class to be added to the button. Example: <code class="code docutils literal"><span class="pre">btn</span> <span class="pre">btn-primary</span> <span class="pre">btn-xs</span></code></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">PagedListButton</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>After adding default buttons, any instance of PagedList can add these buttons by specifying the id’s, like: <code class="code docutils literal"><span class="pre">myList.addDefaultButtons([&quot;Select&quot;])</span></code></p>
+</dd></dl>
+
+<dl class="data">
+<dt id="pagedList.DefaultText">
+<code class="descclassname">pagedList.</code><code class="descname">DefaultText</code><em class="property"> = {'TextTotal': 'Total', 'TextFilter': 'Filter'}</em><a class="headerlink" href="#pagedList.DefaultText" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Default text to show. Can for example be changed like</dt>
+<dd><code class="code docutils literal"><span class="pre">pagedList.DefaultText.TextTotal</span> <span class="pre">=</span> <span class="pre">'Totale!';</span></code></dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="pagedlist">
+<h1>PagedList<a class="headerlink" href="#pagedlist" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pagedList.PagedList">
+<em class="property">class </em><code class="descclassname">pagedList.</code><code class="descname">PagedList</code><a class="headerlink" href="#pagedList.PagedList" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>container</strong> – container element to place this list in. It can be an html-element or an selector (str)</li>
+<li><strong>url</strong> – (optional) url which will be used by this list to get new data. A <a class="reference internal" href="#pagedList.AjaxServer" title="pagedList.AjaxServer"><code class="xref any py py-class docutils literal"><span class="pre">AjaxServer</span></code></a> will be created. If an empty string or null is given, a <a class="reference internal" href="#pagedList.FakeServer" title="pagedList.FakeServer"><code class="xref any py py-class docutils literal"><span class="pre">FakeServer</span></code></a> will be created.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>On refresh the list sends a POST request with data like:</dt>
+<dd><code class="code docutils literal"><span class="pre">{</span> <span class="pre">page:</span> <span class="pre">1,</span> <span class="pre">pageSize:</span> <span class="pre">20,</span> <span class="pre">filterColumns:</span> <span class="pre">[],</span> <span class="pre">filterValues:</span> <span class="pre">[],</span> <span class="pre">sortOn:</span> <span class="pre">'',</span> <span class="pre">sortAsc:</span> <span class="pre">true</span> <span class="pre">}</span></code></dd>
+<dt>It expects to get a response with data like: </dt>
+<dd><code class="code docutils literal"><span class="pre">{</span> <span class="pre">Items:</span> <span class="pre">[],</span> <span class="pre">CurrentPage:</span> <span class="pre">1,</span> <span class="pre">PageCount:</span> <span class="pre">5,</span> <span class="pre">TotalCount:</span> <span class="pre">95</span> <span class="pre">}</span></code></dd>
+</dl>
+<dl class="method">
+<dt id="pagedList.PagedList.addButton">
+<code class="descname">addButton</code><span class="sig-paren">(</span><em>id</em>, <em>name</em>, <em>styleClass</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedList.addButton" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a button to this list. The button will possibly be placed in each row.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>id</strong> – self chosen id for the button to be created. Example: “Select”.</li>
+<li><strong>name</strong> – text to show on the button. Example: “Select now!”</li>
+<li><strong>styleClass</strong> – html style class to be added to the button. Example: <code class="code docutils literal"><span class="pre">btn</span> <span class="pre">btn-primary</span> <span class="pre">btn-xs</span></code></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#pagedList.PagedListButton" title="pagedList.PagedListButton"><code class="xref any py py-class docutils literal"><span class="pre">PagedListButton</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedList.addColumn">
+<code class="descname">addColumn</code><span class="sig-paren">(</span><em>id</em>, <em>header=&lt;built-in function id&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedList.addColumn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a column to this list</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>id</strong> – self chosen id for the column to be created.</li>
+<li><strong>header</strong> – text to show in the header. If not specified, id will be used.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#pagedList.PagedListColumn" title="pagedList.PagedListColumn"><code class="xref any py py-class docutils literal"><span class="pre">PagedListColumn</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedList.addDefaultButtons">
+<code class="descname">addDefaultButtons</code><span class="sig-paren">(</span><em>*ids</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedList.addDefaultButtons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add pre-configured default buttons to this <a class="reference internal" href="#pagedList.PagedList" title="pagedList.PagedList"><code class="xref any py py-class docutils literal"><span class="pre">PagedList</span></code></a>. See also <a class="reference internal" href="#pagedList.addDefaultButton" title="pagedList.addDefaultButton"><code class="xref any py py-func docutils literal"><span class="pre">addDefaultButton</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ids</strong> – list of all id’s, as specified during configuration of the default buttons.</td>
+</tr>
+</tbody>
+</table>
+<p>Default buttons can be called by <code class="code docutils literal"><span class="pre">myList.id</span></code> or <code class="code docutils literal"><span class="pre">myList['id']</span></code> where <code class="code docutils literal"><span class="pre">id</span></code> is the id of the default-buttons.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedList.addRowListener">
+<code class="descname">addRowListener</code><span class="sig-paren">(</span><em>event</em>, <em>func</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedList.addRowListener" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attach an event to the body of the table. When the event gets triggered,
+the row is found which contains the event target. If any row is found,
+the function gets executed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>event</strong> – event, for example: <code class="code docutils literal"><span class="pre">&quot;dblclick&quot;</span></code></li>
+<li><strong>func</strong> – function which accepts an item (data of one row) and (optional) an event.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">function which is added as EventListener. Use this for <a class="reference internal" href="#pagedList.PagedList.removeRowListener" title="pagedList.PagedList.removeRowListener"><code class="xref any py py-meth docutils literal"><span class="pre">removeRowListener</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If this list contains buttons, be aware to take care of the event propagation.
+For example do something like this:</p>
+<div class="highlight-html"><div class="highlight"><pre><span></span>myList.addButton(...).onclick(
+    function(item, evt){
+        // do something you want with item
+        evt.stopPropagation();
+    });
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedList.ajaxServer">
+<code class="descname">ajaxServer</code><span class="sig-paren">(</span><em>url</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedList.ajaxServer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a <a class="reference internal" href="#pagedList.AjaxServer" title="pagedList.AjaxServer"><code class="xref any py py-class docutils literal"><span class="pre">AjaxServer</span></code></a> and uses that for this list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">url: url which will be used by this list to get new data</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#pagedList.AjaxServer" title="pagedList.AjaxServer"><code class="xref any py py-class docutils literal"><span class="pre">AjaxServer</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedList.disablePagination">
+<code class="descname">disablePagination</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedList.disablePagination" title="Permalink to this definition">¶</a></dt>
+<dd><p>Disable pagination for this list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">this <a class="reference internal" href="#pagedList.PagedList" title="pagedList.PagedList"><code class="xref any py py-class docutils literal"><span class="pre">PagedList</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedList.fakeServer">
+<code class="descname">fakeServer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedList.fakeServer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a <a class="reference internal" href="#pagedList.FakeServer" title="pagedList.FakeServer"><code class="xref any py py-class docutils literal"><span class="pre">FakeServer</span></code></a> and uses that for this list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#pagedList.FakeServer" title="pagedList.FakeServer"><code class="xref any py py-class docutils literal"><span class="pre">FakeServer</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedList.getBottomPager">
+<code class="descname">getBottomPager</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedList.getBottomPager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the <a class="reference internal" href="#pagedList.Pager" title="pagedList.Pager"><code class="xref any py py-class docutils literal"><span class="pre">Pager</span></code></a> shown at the bottom.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedList.getData">
+<code class="descname">getData</code><span class="sig-paren">(</span><em>page</em>, <em>fullPage=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedList.getData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a POST request to get new data from server and refresh the list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>page</strong> – page-nr to get</li>
+<li><strong>fullPage</strong> – if false (default) all values will be updated, if true, all rows in the list will be re-rendered, and expanded rows will be removed.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedList.getServer">
+<code class="descname">getServer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedList.getServer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the current used a <a class="reference internal" href="#pagedList.DataServer" title="pagedList.DataServer"><code class="xref any py py-class docutils literal"><span class="pre">DataServer</span></code></a>. See also <a class="reference internal" href="#pagedList.PagedList.fakeServer" title="pagedList.PagedList.fakeServer"><code class="xref any py py-meth docutils literal"><span class="pre">fakeServer</span></code></a> and <a class="reference internal" href="#pagedList.PagedList.ajaxServer" title="pagedList.PagedList.ajaxServer"><code class="xref any py py-meth docutils literal"><span class="pre">ajaxServer</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#pagedList.DataServer" title="pagedList.DataServer"><code class="xref any py py-class docutils literal"><span class="pre">DataServer</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedList.getStyling">
+<code class="descname">getStyling</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedList.getStyling" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the <a class="reference internal" href="#pagedList.PagedListStyling" title="pagedList.PagedListStyling"><code class="xref any py py-class docutils literal"><span class="pre">PagedListStyling</span></code></a> object belonging to this <a class="reference internal" href="#pagedList.PagedList" title="pagedList.PagedList"><code class="xref any py py-class docutils literal"><span class="pre">PagedList</span></code></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedList.getTopPager">
+<code class="descname">getTopPager</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedList.getTopPager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the <a class="reference internal" href="#pagedList.Pager" title="pagedList.Pager"><code class="xref any py py-class docutils literal"><span class="pre">Pager</span></code></a> shown at the top.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedList.getUrl">
+<code class="descname">getUrl</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedList.getUrl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the url for the current used <a class="reference internal" href="#pagedList.DataServer" title="pagedList.DataServer"><code class="xref any py py-class docutils literal"><span class="pre">DataServer</span></code></a>.
+This is only defined if it is a <a class="reference internal" href="#pagedList.AjaxServer" title="pagedList.AjaxServer"><code class="xref any py py-class docutils literal"><span class="pre">AjaxServer</span></code></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedList.hideCount">
+<code class="descname">hideCount</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedList.hideCount" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hide the counter on the top- and bottom pager</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">this <a class="reference internal" href="#pagedList.PagedList" title="pagedList.PagedList"><code class="xref any py py-class docutils literal"><span class="pre">PagedList</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pagedList.PagedList.mergeButtonColumns">
+<code class="descname">mergeButtonColumns</code><em class="property"> = False</em><a class="headerlink" href="#pagedList.PagedList.mergeButtonColumns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default false. If true, all buttons will be placed in one column, instead of creating one column for each button.
+This can only be changed before the first refresh, thus after creation of the list.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedList.onPageRefreshed">
+<code class="descname">onPageRefreshed</code><span class="sig-paren">(</span><em>func=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedList.onPageRefreshed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Place a callback function to be called after the list is refreshed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">this <a class="reference internal" href="#pagedList.PagedList" title="pagedList.PagedList"><code class="xref any py py-class docutils literal"><span class="pre">PagedList</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pagedList.PagedList.pageSize">
+<code class="descname">pageSize</code><em class="property"> = 20</em><a class="headerlink" href="#pagedList.PagedList.pageSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default page size (nr of rows). Can be changed any time calling (e.g.) <code class="code docutils literal"><span class="pre">myList.pageSize</span> <span class="pre">=</span> <span class="pre">10</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedList.refresh">
+<code class="descname">refresh</code><span class="sig-paren">(</span><em>fullPage=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedList.refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refresh this list. This will cause the list to get the data for the current page, and update all values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fullPage</strong> – if false (default) all values will be updated, if true, all rows in the list will be re-rendered, and expanded rows will be removed.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedList.removeRowListener">
+<code class="descname">removeRowListener</code><span class="sig-paren">(</span><em>event</em>, <em>func</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedList.removeRowListener" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove an event from the body of the table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>event</strong> – event, for example: <code class="code docutils literal"><span class="pre">&quot;dblclick&quot;</span></code></li>
+<li><strong>func</strong> – function which is returned from <a class="reference internal" href="#pagedList.PagedList.addRowListener" title="pagedList.PagedList.addRowListener"><code class="xref any py py-meth docutils literal"><span class="pre">addRowListener</span></code></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedList.setUrl">
+<code class="descname">setUrl</code><span class="sig-paren">(</span><em>url</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedList.setUrl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the url for the current used <a class="reference internal" href="#pagedList.DataServer" title="pagedList.DataServer"><code class="xref any py py-class docutils literal"><span class="pre">DataServer</span></code></a>.
+This only makes sence if it is a <a class="reference internal" href="#pagedList.AjaxServer" title="pagedList.AjaxServer"><code class="xref any py py-class docutils literal"><span class="pre">AjaxServer</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>url</strong> – url which will be used by this list to get new data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">this <a class="reference internal" href="#pagedList.PagedList" title="pagedList.PagedList"><code class="xref any py py-class docutils literal"><span class="pre">PagedList</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pagedliststyling">
+<h1>PagedListStyling<a class="headerlink" href="#pagedliststyling" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pagedList.PagedListStyling">
+<em class="property">class </em><code class="descclassname">pagedList.</code><code class="descname">PagedListStyling</code><a class="headerlink" href="#pagedList.PagedListStyling" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object which is automatically created by <a class="reference internal" href="#pagedList.PagedList" title="pagedList.PagedList"><code class="xref any py py-class docutils literal"><span class="pre">PagedList</span></code></a> and used for styling. Use the object by calling <code class="code docutils literal"><span class="pre">myList.getStyling()</span></code></p>
+<dl class="method">
+<dt id="pagedList.PagedListStyling.rowClasses">
+<code class="descname">rowClasses</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedListStyling.rowClasses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specify the html style classes for each row. Calling this function multiple times will append all classes.
+To clear all previously added classes, call <code class="code docutils literal"><span class="pre">myList.rowClasses(null);</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>func</strong> – function which accepts an item (data of 1 row) and returns a string with style classes</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">this <a class="reference internal" href="#pagedList.PagedListStyling" title="pagedList.PagedListStyling"><code class="xref any py py-class docutils literal"><span class="pre">PagedListStyling</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedListStyling.rowStyles">
+<code class="descname">rowStyles</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedListStyling.rowStyles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specify the html styles for each row. Calling this function multiple times will append all styles.
+To clear all previously added styles, call <code class="code docutils literal"><span class="pre">myList.rowStyles(null);</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>func</strong> – function which accepts an item (data of 1 row) and returns a string with styles</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">this <a class="reference internal" href="#pagedList.PagedListStyling" title="pagedList.PagedListStyling"><code class="xref any py py-class docutils literal"><span class="pre">PagedListStyling</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedListStyling.setClassAscending">
+<code class="descname">setClassAscending</code><span class="sig-paren">(</span><em>styleClass</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedListStyling.setClassAscending" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specify the html style class for the span in the column header when the column is sorted in &lt;b&gt;ascending&lt;/b&gt; order.
+This will override the default value: <code class="code docutils literal"><span class="pre">glyphicon</span> <span class="pre">glyphicon-triangle-top</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>styleClass</strong> – a string with style classes</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">this <a class="reference internal" href="#pagedList.PagedListStyling" title="pagedList.PagedListStyling"><code class="xref any py py-class docutils literal"><span class="pre">PagedListStyling</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedListStyling.setClassButtonColumn">
+<code class="descname">setClassButtonColumn</code><span class="sig-paren">(</span><em>styleClass</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedListStyling.setClassButtonColumn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specify the html style class for the button column(s),
+This will override the default value: <code class="code docutils literal"><span class="pre">pagedList-buttonColumn</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>styleClass</strong> – a string with style classes</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">this <a class="reference internal" href="#pagedList.PagedListStyling" title="pagedList.PagedListStyling"><code class="xref any py py-class docutils literal"><span class="pre">PagedListStyling</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedListStyling.setClassCollapsed">
+<code class="descname">setClassCollapsed</code><span class="sig-paren">(</span><em>styleClass</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedListStyling.setClassCollapsed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specify the html style class for the span in a column row when the row is collapsed.
+This will override the default value: <code class="code docutils literal"><span class="pre">cursor</span> <span class="pre">glyphicon</span> <span class="pre">glyphicon-triangle-right</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>styleClass</strong> – a string with style classes</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">this <a class="reference internal" href="#pagedList.PagedListStyling" title="pagedList.PagedListStyling"><code class="xref any py py-class docutils literal"><span class="pre">PagedListStyling</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedListStyling.setClassDescending">
+<code class="descname">setClassDescending</code><span class="sig-paren">(</span><em>styleClass</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedListStyling.setClassDescending" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specify the html style class for the span in the column header when the column is sorted in &lt;b&gt;descending&lt;/b&gt; order.
+This will override the default value: <code class="code docutils literal"><span class="pre">glyphicon</span> <span class="pre">glyphicon-triangle-bottom</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>styleClass</strong> – a string with style classes</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">this <a class="reference internal" href="#pagedList.PagedListStyling" title="pagedList.PagedListStyling"><code class="xref any py py-class docutils literal"><span class="pre">PagedListStyling</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedListStyling.setClassExpanded">
+<code class="descname">setClassExpanded</code><span class="sig-paren">(</span><em>styleClass</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedListStyling.setClassExpanded" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specify the html style class for the span in a column row when the row is expanded.
+This will override the default value: <code class="code docutils literal"><span class="pre">cursor</span> <span class="pre">glyphicon</span> <span class="pre">glyphicon-triangle-bottom</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>styleClass</strong> – a string with style classes</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">this <a class="reference internal" href="#pagedList.PagedListStyling" title="pagedList.PagedListStyling"><code class="xref any py py-class docutils literal"><span class="pre">PagedListStyling</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedListStyling.tableClass">
+<code class="descname">tableClass</code><span class="sig-paren">(</span><em>styleClass</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedListStyling.tableClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specify the html style class for the table, to override the default value: <code class="code docutils literal"><span class="pre">table</span> <span class="pre">table-striped</span> <span class="pre">table-hover</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>styleClass</strong> – a string with style classes</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">this <a class="reference internal" href="#pagedList.PagedListStyling" title="pagedList.PagedListStyling"><code class="xref any py py-class docutils literal"><span class="pre">PagedListStyling</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedListStyling.tableStyle">
+<code class="descname">tableStyle</code><span class="sig-paren">(</span><em>style</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedListStyling.tableStyle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specify the html style for the table</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>style</strong> – a string with the style</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">this <a class="reference internal" href="#pagedList.PagedListStyling" title="pagedList.PagedListStyling"><code class="xref any py py-class docutils literal"><span class="pre">PagedListStyling</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pagedlistcolumn">
+<h1>PagedListColumn<a class="headerlink" href="#pagedlistcolumn" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pagedList.PagedListColumn">
+<em class="property">class </em><code class="descclassname">pagedList.</code><code class="descname">PagedListColumn</code><a class="headerlink" href="#pagedList.PagedListColumn" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="pagedList.PagedListColumn.addClass">
+<code class="descname">addClass</code><span class="sig-paren">(</span><em>styleClass</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedListColumn.addClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a style-class to the header and to the rows. This is the same as calling <a class="reference internal" href="#pagedList.PagedListColumn.addClassHeader" title="pagedList.PagedListColumn.addClassHeader"><code class="xref any py py-meth docutils literal"><span class="pre">addClassHeader</span></code></a> and <a class="reference internal" href="#pagedList.PagedListColumn.addClassRows" title="pagedList.PagedListColumn.addClassRows"><code class="xref any py py-meth docutils literal"><span class="pre">addClassRows</span></code></a> subsequently.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>style</strong> – html style class</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">this <a class="reference internal" href="#pagedList.PagedListColumn" title="pagedList.PagedListColumn"><code class="xref any py py-class docutils literal"><span class="pre">PagedListColumn</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedListColumn.addClassHeader">
+<code class="descname">addClassHeader</code><span class="sig-paren">(</span><em>styleClass</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedListColumn.addClassHeader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a style-class to the header. Default class which is always added: <code class="code docutils literal"><span class="pre">pagedListColumnHeader</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>styleClass</strong> – html style class</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">this <a class="reference internal" href="#pagedList.PagedListColumn" title="pagedList.PagedListColumn"><code class="xref any py py-class docutils literal"><span class="pre">PagedListColumn</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedListColumn.addClassHeaderSpan">
+<code class="descname">addClassHeaderSpan</code><span class="sig-paren">(</span><em>styleClass</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedListColumn.addClassHeaderSpan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a style-class to the span in the header.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>styleClass</strong> – html style class</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">this <a class="reference internal" href="#pagedList.PagedListColumn" title="pagedList.PagedListColumn"><code class="xref any py py-class docutils literal"><span class="pre">PagedListColumn</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedListColumn.addClassRows">
+<code class="descname">addClassRows</code><span class="sig-paren">(</span><em>styleClass</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedListColumn.addClassRows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a style-class to the rows (all rows, item independent). Default class which is always added: <code class="code docutils literal"><span class="pre">pagedListColumnRow</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>styleClass</strong> – html style class</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">this <a class="reference internal" href="#pagedList.PagedListColumn" title="pagedList.PagedListColumn"><code class="xref any py py-class docutils literal"><span class="pre">PagedListColumn</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedListColumn.addStyle">
+<code class="descname">addStyle</code><span class="sig-paren">(</span><em>style</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedListColumn.addStyle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a style to the header and to the rows. This is the same as calling <a class="reference internal" href="#pagedList.PagedListColumn.addStyleHeader" title="pagedList.PagedListColumn.addStyleHeader"><code class="xref any py py-meth docutils literal"><span class="pre">addStyleHeader</span></code></a> and <a class="reference internal" href="#pagedList.PagedListColumn.addStyleRows" title="pagedList.PagedListColumn.addStyleRows"><code class="xref any py py-meth docutils literal"><span class="pre">addStyleRows</span></code></a> subsequently.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>style</strong> – html style</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">this <a class="reference internal" href="#pagedList.PagedListColumn" title="pagedList.PagedListColumn"><code class="xref any py py-class docutils literal"><span class="pre">PagedListColumn</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedListColumn.addStyleHeader">
+<code class="descname">addStyleHeader</code><span class="sig-paren">(</span><em>style</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedListColumn.addStyleHeader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a style to the header.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>style</strong> – html style</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">this <a class="reference internal" href="#pagedList.PagedListColumn" title="pagedList.PagedListColumn"><code class="xref any py py-class docutils literal"><span class="pre">PagedListColumn</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedListColumn.addStyleHeaderSpan">
+<code class="descname">addStyleHeaderSpan</code><span class="sig-paren">(</span><em>style</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedListColumn.addStyleHeaderSpan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a style to the span in the header.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>style</strong> – html style</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">this <a class="reference internal" href="#pagedList.PagedListColumn" title="pagedList.PagedListColumn"><code class="xref any py py-class docutils literal"><span class="pre">PagedListColumn</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedListColumn.addStyleRows">
+<code class="descname">addStyleRows</code><span class="sig-paren">(</span><em>style</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedListColumn.addStyleRows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a style to the rows (all rows, item independent).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>style</strong> – html style</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">this <a class="reference internal" href="#pagedList.PagedListColumn" title="pagedList.PagedListColumn"><code class="xref any py py-class docutils literal"><span class="pre">PagedListColumn</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedListColumn.enableFilter">
+<code class="descname">enableFilter</code><span class="sig-paren">(</span><em>items=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedListColumn.enableFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enable filtering for this column. This will show a html input textfield or a html select in the header of the column.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>items</strong> – optional, a list of filter-items to filter on. Example with 2 filter-items: <code class="code docutils literal"><span class="pre">[{Text:</span> <span class="pre">'Apples',</span> <span class="pre">Value:</span> <span class="pre">1},</span> <span class="pre">{Text:</span> <span class="pre">'Oranges',</span> <span class="pre">Value:</span> <span class="pre">2}]</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">this <a class="reference internal" href="#pagedList.PagedListColumn" title="pagedList.PagedListColumn"><code class="xref any py py-class docutils literal"><span class="pre">PagedListColumn</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedListColumn.enableSort">
+<code class="descname">enableSort</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedListColumn.enableSort" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enable sorting for this column. This will give possibility to click on the header, to toggle ascending and descending ordering.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">this <a class="reference internal" href="#pagedList.PagedListColumn" title="pagedList.PagedListColumn"><code class="xref any py py-class docutils literal"><span class="pre">PagedListColumn</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedListColumn.itemToElement">
+<code class="descname">itemToElement</code><span class="sig-paren">(</span><em>itemToElementFunction</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedListColumn.itemToElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define how the column content will be rendered, based on the row data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>itemToElementFunction</strong> – function which accepts an item (data of a row) and returns a html element</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">this <a class="reference internal" href="#pagedList.PagedListColumn" title="pagedList.PagedListColumn"><code class="xref any py py-class docutils literal"><span class="pre">PagedListColumn</span></code></a></td>
+</tr>
+</tbody>
+</table>
+<p>Note: this function will only be re-rendered if <code class="code docutils literal"><span class="pre">fullPage=true</span></code>, see also <a class="reference internal" href="#pagedList.PagedList.refresh" title="pagedList.PagedList.refresh"><code class="xref any py py-meth docutils literal"><span class="pre">refresh</span></code></a> and <a class="reference internal" href="#pagedList.PagedList.getData" title="pagedList.PagedList.getData"><code class="xref any py py-meth docutils literal"><span class="pre">getData</span></code></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedListColumn.itemToHtml">
+<code class="descname">itemToHtml</code><span class="sig-paren">(</span><em>itemToHtmlFunction</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedListColumn.itemToHtml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define how the column content will be rendered, based on the row data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>itemToHtmlFunction</strong> – function which accepts an item (data of a row) and returns a html string</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">this <a class="reference internal" href="#pagedList.PagedListColumn" title="pagedList.PagedListColumn"><code class="xref any py py-class docutils literal"><span class="pre">PagedListColumn</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedListColumn.onExpandItem">
+<code class="descname">onExpandItem</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedListColumn.onExpandItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make this column expandable. A clickable arrow will be added to each row. On clicking an html-element will be inserted or removed below the clicked row.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>func</strong> – function which accepts an item (data of a row) and returns a html element. The element will be placed inside the second column of a new generated table.
+Styling can be done by the style classes <code class="code docutils literal"><span class="pre">subPagedListTd</span></code>, <code class="code docutils literal"><span class="pre">subPagedListTable</span></code>, <code class="code docutils literal"><span class="pre">subPagedListCell1</span></code> and <code class="code docutils literal"><span class="pre">subPagedListCell2</span></code>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">this <a class="reference internal" href="#pagedList.PagedListColumn" title="pagedList.PagedListColumn"><code class="xref any py py-class docutils literal"><span class="pre">PagedListColumn</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pagedlistbutton">
+<h1>PagedListButton<a class="headerlink" href="#pagedlistbutton" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pagedList.PagedListButton">
+<em class="property">class </em><code class="descclassname">pagedList.</code><code class="descname">PagedListButton</code><a class="headerlink" href="#pagedList.PagedListButton" title="Permalink to this definition">¶</a></dt>
+<dd><p>Button to show for each row in a <a class="reference internal" href="#pagedList.PagedList" title="pagedList.PagedList"><code class="xref any py py-class docutils literal"><span class="pre">PagedList</span></code></a>.
+Buttons are created by calling <a class="reference internal" href="#pagedList.PagedList.addButton" title="pagedList.PagedList.addButton"><code class="xref any py py-meth docutils literal"><span class="pre">addButton</span></code></a> on a <a class="reference internal" href="#pagedList.PagedList" title="pagedList.PagedList"><code class="xref any py py-class docutils literal"><span class="pre">PagedList</span></code></a> instance.</p>
+<dl class="method">
+<dt id="pagedList.PagedListButton.onclick">
+<code class="descname">onclick</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedListButton.onclick" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an callback function to this button to be called when button is clicked.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>func</strong> – function which accepts a item (data for one row)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">this <a class="reference internal" href="#pagedList.PagedListButton" title="pagedList.PagedListButton"><code class="xref any py py-class docutils literal"><span class="pre">PagedListButton</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.PagedListButton.showIf">
+<code class="descname">showIf</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.PagedListButton.showIf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an function to this button to determine if this button is shown for a specific row.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>func</strong> – function which accepts a item (data for one row) and returns true/false</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">this <a class="reference internal" href="#pagedList.PagedListButton" title="pagedList.PagedListButton"><code class="xref any py py-class docutils literal"><span class="pre">PagedListButton</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pager">
+<h1>Pager<a class="headerlink" href="#pager" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pagedList.Pager">
+<em class="property">class </em><code class="descclassname">pagedList.</code><code class="descname">Pager</code><a class="headerlink" href="#pagedList.Pager" title="Permalink to this definition">¶</a></dt>
+<dd><p>A Pager shows clickable page numbers and the total count of items, and can be shown at top and bottom of a <a class="reference internal" href="#pagedList.PagedList" title="pagedList.PagedList"><code class="xref any py py-class docutils literal"><span class="pre">PagedList</span></code></a></p>
+<p>The html element structure gets generated like:</p>
+<div class="highlight-html"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">table</span> <span class="na">width</span><span class="o">=</span><span class="s">&quot;100%&quot;</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">tbody</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span>
+                    <span class="p">&lt;</span><span class="nt">ul</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;pagination&quot;</span><span class="p">&gt;</span>
+                        <span class="p">&lt;</span><span class="nt">li</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;active&quot;</span><span class="p">&gt;</span>
+                            <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;#&quot;</span><span class="p">&gt;</span>1<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+                        <span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+                        <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>
+                            <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;#&quot;</span><span class="p">&gt;</span>2<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+                        <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>
+                            <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;#&quot;</span><span class="p">&gt;</span>3<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+                        <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>
+                            <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;#&quot;</span><span class="p">&gt;</span>4<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+                        <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>
+                            <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;#&quot;</span><span class="p">&gt;</span>5<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+                        <span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+                    <span class="p">&lt;/</span><span class="nt">ul</span><span class="p">&gt;</span>
+                <span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">td</span> <span class="na">align</span><span class="o">=</span><span class="s">&quot;right&quot;</span><span class="p">&gt;</span>
+                    Total: <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;label label-default&quot;</span><span class="p">&gt;</span>10<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+                <span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+            <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">tbody</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">table</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>The styling is defined by the following classes:</p>
+<ul class="simple">
+<li><code class="code docutils literal"><span class="pre">pagination</span></code> on the <code class="code docutils literal"><span class="pre">ul</span></code> element, for the page numbers.</li>
+<li><code class="code docutils literal"><span class="pre">active</span></code> on the <code class="code docutils literal"><span class="pre">li</span></code> element , for the active page number.</li>
+<li><code class="code docutils literal"><span class="pre">label</span> <span class="pre">label-default</span></code> on the <code class="code docutils literal"><span class="pre">span</span></code> element for the count number.</li>
+</ul>
+<dl class="method">
+<dt id="pagedList.Pager.disable">
+<code class="descname">disable</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.Pager.disable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Disable this pager and make it invisible.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">this <a class="reference internal" href="#pagedList.Pager" title="pagedList.Pager"><code class="xref any py py-class docutils literal"><span class="pre">Pager</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.Pager.enable">
+<code class="descname">enable</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.Pager.enable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enable this pager and make it visible (again).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">this <a class="reference internal" href="#pagedList.Pager" title="pagedList.Pager"><code class="xref any py py-class docutils literal"><span class="pre">Pager</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.Pager.getElement">
+<code class="descname">getElement</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.Pager.getElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the html element of this Pager object, which is a <code class="code docutils literal"><span class="pre">div</span></code> element.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.Pager.getTable">
+<code class="descname">getTable</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.Pager.getTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the html <code class="code docutils literal"><span class="pre">table</span></code> element of this Pager.
+Can for example be used to override the default style <code class="code docutils literal"><span class="pre">height:</span> <span class="pre">80px;</span></code>:</p>
+<div class="highlight-html"><div class="highlight"><pre><span></span>myList.getTopPager().getTable().style = &quot;height: 150px&quot;;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.Pager.hideCount">
+<code class="descname">hideCount</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.Pager.hideCount" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hide the counter of this pager</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">this <a class="reference internal" href="#pagedList.Pager" title="pagedList.Pager"><code class="xref any py py-class docutils literal"><span class="pre">Pager</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.Pager.setActiveClass">
+<code class="descname">setActiveClass</code><span class="sig-paren">(</span><em>styleClass</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.Pager.setActiveClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace the default class <code class="code docutils literal"><span class="pre">active</span></code> in the html structure of this <a class="reference internal" href="#pagedList.Pager" title="pagedList.Pager"><code class="xref any py py-class docutils literal"><span class="pre">Pager</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">this <a class="reference internal" href="#pagedList.Pager" title="pagedList.Pager"><code class="xref any py py-class docutils literal"><span class="pre">Pager</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.Pager.setCountClass">
+<code class="descname">setCountClass</code><span class="sig-paren">(</span><em>styleClass</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.Pager.setCountClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace the default class <code class="code docutils literal"><span class="pre">label</span> <span class="pre">label-default</span></code> in the html structure of this <a class="reference internal" href="#pagedList.Pager" title="pagedList.Pager"><code class="xref any py py-class docutils literal"><span class="pre">Pager</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">this <a class="reference internal" href="#pagedList.Pager" title="pagedList.Pager"><code class="xref any py py-class docutils literal"><span class="pre">Pager</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.Pager.setPaginationClass">
+<code class="descname">setPaginationClass</code><span class="sig-paren">(</span><em>styleClass</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.Pager.setPaginationClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace the default class <code class="code docutils literal"><span class="pre">pagination</span></code> in the html structure of this <a class="reference internal" href="#pagedList.Pager" title="pagedList.Pager"><code class="xref any py py-class docutils literal"><span class="pre">Pager</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">this <a class="reference internal" href="#pagedList.Pager" title="pagedList.Pager"><code class="xref any py py-class docutils literal"><span class="pre">Pager</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="dataserver">
+<h1>DataServer<a class="headerlink" href="#dataserver" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pagedList.DataServer">
+<em class="property">class </em><code class="descclassname">pagedList.</code><code class="descname">DataServer</code><a class="headerlink" href="#pagedList.DataServer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for objects who deliver data to <a class="reference internal" href="#pagedList.PagedList" title="pagedList.PagedList"><code class="xref any py py-class docutils literal"><span class="pre">PagedList</span></code></a>. Instantiation is done automatically by creating a PagedList, or manually by invoking <code class="code docutils literal"><span class="pre">myList.fakeServer()</span></code> and <code class="code docutils literal"><span class="pre">myList.ajaxServer(url)</span></code> 
+Any DataServer must take care of filtering, sorting and paging, as requested by the PagedList.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="ajaxserver">
+<h1>AjaxServer<a class="headerlink" href="#ajaxserver" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pagedList.AjaxServer">
+<em class="property">class </em><code class="descclassname">pagedList.</code><code class="descname">AjaxServer</code><a class="headerlink" href="#pagedList.AjaxServer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object which creates Ajax calls to the server and passes this data to the PagedList.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="fakeserver">
+<h1>FakeServer<a class="headerlink" href="#fakeserver" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pagedList.FakeServer">
+<em class="property">class </em><code class="descclassname">pagedList.</code><code class="descname">FakeServer</code><a class="headerlink" href="#pagedList.FakeServer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object to hold the data used by <a class="reference internal" href="#pagedList.PagedList" title="pagedList.PagedList"><code class="xref any py py-class docutils literal"><span class="pre">PagedList</span></code></a>. This objects takes care of filtering, sorting and paging, doing this all on client side.</p>
+<dl class="method">
+<dt id="pagedList.FakeServer.addData">
+<code class="descname">addData</code><span class="sig-paren">(</span><em>*items</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.FakeServer.addData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add data to this server. If sorting or filtering is enabled, field names of data-items must correspond with column id.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.FakeServer.deleteItem">
+<code class="descname">deleteItem</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.FakeServer.deleteItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove an item from data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.FakeServer.getItem">
+<code class="descname">getItem</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.FakeServer.getItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get an item (row) of data with the given id</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pagedList.FakeServer.getMaxId">
+<code class="descname">getMaxId</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pagedList.FakeServer.getMaxId" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns maximum id of the data items in this server.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">PagedList’s documentation</a></li>
+<li><a class="reference internal" href="#how-does-it-look">How does it look</a></li>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#code-examples">Code examples</a></li>
+<li><a class="reference internal" href="#module-pagedList">Globals</a></li>
+<li><a class="reference internal" href="#pagedlist">PagedList</a></li>
+<li><a class="reference internal" href="#pagedliststyling">PagedListStyling</a></li>
+<li><a class="reference internal" href="#pagedlistcolumn">PagedListColumn</a></li>
+<li><a class="reference internal" href="#pagedlistbutton">PagedListButton</a></li>
+<li><a class="reference internal" href="#pager">Pager</a></li>
+<li><a class="reference internal" href="#dataserver">DataServer</a></li>
+<li><a class="reference internal" href="#ajaxserver">AjaxServer</a></li>
+<li><a class="reference internal" href="#fakeserver">FakeServer</a></li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pagedListDoc.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, PJB.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/pagedListDoc.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
