@@ -17,3 +17,11 @@ How does it look
 ================
 ![alt text](https://raw.githubusercontent.com/pjbonestroo/pagedList/master/docs/sphinx/_build/html/_images/example.png)
 
+Installation
+============
+Add dependencies to your html file:
+- jQuery <https://jquery.com/>
+- Bootstrap <http://getbootstrap.com/>
+
+Add `pagedList.min.js` or `pagedList.js` to your html file, like:
+`<script src="pagedList.min.js"></script>`
