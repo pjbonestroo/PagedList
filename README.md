@@ -1,5 +1,5 @@
 # PagedList
-Javascript PagedList component for easily creating paginated lists in the browser
+Javascript PagedList component for easily creating paginated lists in the browser.
 
 PagedList is a javascript library to create html lists (or tables) with pagination and auto rendering features. Columns and buttons can be configured.
 
