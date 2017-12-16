@@ -25,3 +25,32 @@ Add dependencies to your html file:
 
 Add `pagedList.min.js` or `pagedList.js` to your html file, like:
 `<script src="pagedList.min.js"></script>`
+
+Code examples
+=============
+Add a new list to an existing html element with `id=myListId`, using `PagedList`:
+```
+var myList = new pagedList.PagedList("#myListId", "http://myURL/getListItems");
+```
+Add a column with sorting and filtering capabilities, using `addColumn`:
+```
+var column_one = myList.addColumn("Name", "Name")
+     .enableFilter()
+     .enableSort();
+```
+Define how the column content will be rendered, based on the row data, using `itemToHtml` (alternatively use `itemToElement`):
+```
+column_one.itemToHtml(function (item) {
+     return "<div>" + item.Name + "</div>";
+});
+```
+Add a button to the list, including style classes, which will be visible dependent on row data, using `addButton`:
+```
+myList.addButton("Edit", "Edit", "btn btn-primary btn-xs")
+     .onclick(function (item) {
+         console.log("Todo: edit item");
+     }).showIf(function (item) {
+         return item.CanEdit == true;
+     });
+```
+For more examples, download the standalone example page (docs/example), which shows a PagedList with data from a fake server.
