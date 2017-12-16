@@ -5,7 +5,7 @@ PagedList is a javascript library to create html lists (or tables) with paginati
 
 Columns are configurable to enable sorting and filtering. Buttons are default shown for each row, but can be configured to be visible dependent on row data. Callback functions can be applied on buttons. The row data will be passed to the callback function when a button is clicked.
 
-The list gets refreshed automatically when the user changes sorting or filtering (or browse to an other page). Refreshing can also be done manually by calling `myList.refresh()`
+The list gets refreshed automatically when the user changes sorting or filtering (or browse to an other page). Refreshing can also be done manually by calling `myList.refresh()`.
 
 Columns can be configured to expand and collapse, which inserts and deletes an html-element below the clicked row.
 
