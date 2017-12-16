@@ -27,7 +27,7 @@ Add dependencies to your html file:
 
 Add `pagedList.min.js` or `pagedList.js` to your html file, like:
 `<script src="pagedList.min.js"></script>`
-The Javascript files can be found in the `python/__javascript__/' folder.
+The Javascript files can be found in the `python/__javascript__/` folder.
 
 Code examples
 =============
