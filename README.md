@@ -17,6 +17,8 @@ This library is generated from Python using Transcrypt <https://www.transcrypt.o
 
 How does it look
 ================
+The styling is fully customizable, but with some defaults it will look like:
+
 ![alt text](https://raw.githubusercontent.com/pjbonestroo/pagedList/master/docs/sphinx/_build/html/_images/example.png)
 
 Installation
