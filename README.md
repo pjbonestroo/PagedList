@@ -25,6 +25,7 @@ Add dependencies to your html file:
 
 Add `pagedList.min.js` or `pagedList.js` to your html file, like:
 `<script src="pagedList.min.js"></script>`
+The Javascript files can be found in the `python/__javascript__/' folder.
 
 Code examples
 =============
@@ -54,3 +55,5 @@ myList.addButton("Edit", "Edit", "btn btn-primary btn-xs")
      });
 ```
 For more examples, download the standalone example page (docs/example), which shows a PagedList with data from a fake server.
+
+For the full API, download the Sphinx documentation as described above.
