@@ -155,7 +155,7 @@ class PagedList(ElementWrapper):
     SendData = { 'page', 'pageSize', 'filterColumns', 'filterValues', 'sortOn', 'sortAsc' }
     ReceiveData = { 'Items', 'CurrentPage', 'PageCount', 'TotalCount' }
     
-    def __init__(self, container, url):
+    def __init__(self, container: str, url: str):
         if Object.prototype.toString.call(container) == "[object String]": # container is an id
             self.containerId = container
             container = document.querySelector(self.containerId)
