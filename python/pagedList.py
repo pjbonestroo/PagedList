@@ -192,12 +192,12 @@ class PagedList(ElementWrapper):
     def getStyling(self):
         return self.styling
 
-    def addColumn(self, id, header = id):
+    def addColumn(self, id: str, header: str = id):
         column = PagedListColumn(id, header)
         self.columns.append(column)
         return column
 
-    def setUrl(self, url):
+    def setUrl(self, url: str):
         self._server.url = url
         return self
 
