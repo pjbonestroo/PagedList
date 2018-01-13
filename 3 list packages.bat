@@ -1,3 +1,3 @@
 call pyenv/Scripts/activate pyenv
-pip list
+python -m pip list --format=columns
 pause
