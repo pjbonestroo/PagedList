@@ -7,7 +7,7 @@ Columns are configurable to enable sorting and filtering. Buttons are default sh
 
 The list gets refreshed automatically when the user changes sorting or filtering (or browse to an other page). Refreshing can also be done manually by calling `myList.refresh()`. Debouncing will prevent too many refreshes.
 
-Columns can be configured to expand and collapse, which inserts and deletes an html-element below the clicked row. Refreshing will keep expanded items intact.
+Columns can be configured to expand and collapse, which inserts and deletes an html-element below the clicked row. Refreshing will keep expanded items intact. It is also easy to make nested lists this way.
 
 The data source can be server-side or client-side. This also means filtering, sorting (and paging) will be done server- or client-side. For server-side you need to implement it yourself. For client-side this library will take care.
 
