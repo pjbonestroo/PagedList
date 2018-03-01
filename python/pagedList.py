@@ -411,6 +411,13 @@ class PagedList(ElementWrapper):
 
     def removeRowListener(self, event, func):
         self.tbody.element.removeEventListener(event, func, False)
+
+    def getRow(self, item):
+        """ Return the row which contains item as data """
+        for row in self.rows: # type: PagedListRow
+            if item == row.item:
+                return row
+        return None
         
 class PagedListStyling():
 
@@ -567,22 +574,24 @@ class PagedListRow(ElementWrapper):
                     td.append(buttonElement)
 
     def refresh(self, item):
-        self.item = item
+        """ Compute styling and re-render elements of this row. """
+        if item != None:
+            self.item = item
         style = ""
         for func in self.pagedList.styling._rowStylesFunctions:
-            style += func(item) + " "
+            style += func(self.item) + " "
         self.attr('style', style)
         styleClass = ""
         for func in self.pagedList.styling._rowClassesFunctions:
-            styleClass += func(item) + " "
+            styleClass += func(self.item) + " "
         self.attr('class', styleClass)
         if not self.pagedList._rowClassesFunction == None:
-            self.attr('class', self.pagedList._rowClassesFunction(item))
+            self.attr('class', self.pagedList._rowClassesFunction(self.item))
         for element in self.elementsToRemove:
             element.removeFromParent()
         self.elementsToRemove = []
         for func in self.refreshFunctions:
-            func(item)
+            func(self.item)
 
     def refreshPosition(self):
         # make sorting of elements according sorting in pagedList.rows

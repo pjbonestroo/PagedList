@@ -31,7 +31,7 @@ class CompileEventHandler(FileSystemEventHandler):
     def on_any_event(self, event):
         if time.time() > self.lastTime + self.timespan:
             os.system('cls') # clear screen
-            print("Compiling")
+            print(f"Compiling (at {time.strftime('%H:%M:%S', time.localtime(time.time()))})")
             # note: gets automatically called from current virtual environment:
             if True:
                 r = subprocess.Popen(args=f"transcrypt python/{modulename}.py", stdout=subprocess.PIPE)

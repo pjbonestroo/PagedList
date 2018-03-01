@@ -528,6 +528,16 @@
 			});},
 			get removeRowListener () {return __get__ (this, function (self, event, func) {
 				self.tbody.element.removeEventListener (event, func, false);
+			});},
+			get getRow () {return __get__ (this, function (self, item) {
+				var __iterable0__ = self.rows;
+				for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
+					var row = __iterable0__ [__index0__];
+					if (item == row.item) {
+						return row;
+					}
+				}
+				return null;
 			});}
 		});
 		var PagedListStyling = __class__ ('PagedListStyling', [object], {
@@ -720,23 +730,25 @@
 				}
 			});},
 			get refresh () {return __get__ (this, function (self, item) {
-				self.item = item;
+				if (item != null) {
+					self.item = item;
+				}
 				var style = '';
 				var __iterable0__ = self.pagedList.styling._rowStylesFunctions;
 				for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
 					var func = __iterable0__ [__index0__];
-					style += func (item) + ' ';
+					style += func (self.item) + ' ';
 				}
 				self.attr ('style', style);
 				var styleClass = '';
 				var __iterable0__ = self.pagedList.styling._rowClassesFunctions;
 				for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
 					var func = __iterable0__ [__index0__];
-					styleClass += func (item) + ' ';
+					styleClass += func (self.item) + ' ';
 				}
 				self.attr ('class', styleClass);
 				if (!(self.pagedList._rowClassesFunction == null)) {
-					self.attr ('class', self.pagedList._rowClassesFunction (item));
+					self.attr ('class', self.pagedList._rowClassesFunction (self.item));
 				}
 				var __iterable0__ = self.elementsToRemove;
 				for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
@@ -747,7 +759,7 @@
 				var __iterable0__ = self.refreshFunctions;
 				for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
 					var func = __iterable0__ [__index0__];
-					func (item);
+					func (self.item);
 				}
 			});},
 			get refreshPosition () {return __get__ (this, function (self) {
@@ -1205,7 +1217,7 @@
 					return obj;
 				}
 				return FakeServer.getNestedValue (obj [fields [0]], fields.__getslice__ (1, null, 1));
-			}},
+			};},
 			get getFilters () {return __get__ (this, function (self, filterColumns, filterValues) {
 				var result = list ([]);
 				var passFilter = function (field, value, item) {
