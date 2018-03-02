@@ -10,6 +10,7 @@ export class PagedList {
     setUrl(url: string): PagedList;
     getUrl(): string;
     onPageRefreshed(func: Function): PagedList;
+    onPageRefreshing(func: Function): PagedList;
     addButton(id: string, name: string, styleClass: string): PagedListButton;
     getTopPager(): Pager;
     getBottomPager(): Pager;
@@ -18,6 +19,7 @@ export class PagedList {
     addDefaultButtons(...ids: string[]): void;
     getData(page: number, fullPage: boolean): void;
     refresh(fullPage?: boolean): void;
+    refreshItem(item: any, newItem: any);
     getServer(): DataServer;
     fakeServer(): FakeServer;
     ajaxServer(): AjaxServer;
