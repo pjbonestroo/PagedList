@@ -1,5 +1,5 @@
 "use strict";
-// Transcrypt'ed from Python, 2018-03-01 09:06:05
+// Transcrypt'ed from Python, 2018-03-02 08:05:40
 function pagedList () {
     var __symbols__ = ['__py3.6__', '__esv5__'];
     var __all__ = {};
@@ -2367,6 +2367,7 @@ function pagedList () {
 				self.pageSize = 20;
 				self.mergeButtonColumns = false;
 				self._onPageRefreshed = null;
+				self._onPageRefreshing = null;
 				self.refreshDelayer = Delayer (500);
 				self.styling = PagedListStyling (self);
 				self.styling.tableClass ('table table-striped table-hover');
@@ -2404,6 +2405,21 @@ function pagedList () {
 				}
 				else {
 					console.error ('.onPageRefreshed on Paged-List for container with id {} failed. Passed argument is not a function.'.format (self.containerId));
+				}
+				return self;
+			});},
+			get onPageRefreshing () {return __get__ (this, function (self, func) {
+				if (typeof func == 'undefined' || (func != null && func .hasOwnProperty ("__kwargtrans__"))) {;
+					var func = null;
+				};
+				if (typeof (func) == 'function') {
+					self._onPageRefreshing = func;
+				}
+				else if (func == null) {
+					self._onPageRefreshing = null;
+				}
+				else {
+					console.error ('._onPageRefreshing on Paged-List for container with id {} failed. Passed argument is not a function.'.format (self.containerId));
 				}
 				return self;
 			});},
@@ -2532,6 +2548,9 @@ function pagedList () {
 				if (!(containsAll (data, PagedList.ReceiveData))) {
 					console.error ('Paged-List for container with id {} cannot render. Received data does not contain all required fields: {}.'.format (self.containerId, PagedList.ReceiveData));
 				}
+				if (self._onPageRefreshing != null) {
+					self._onPageRefreshing ();
+				}
 				if (data.CurrentPage > data.PageCount && data.PageCount > 0) {
 					self.getData (data.PageCount);
 					return ;
@@ -2608,7 +2627,7 @@ function pagedList () {
 						return scrollPosition.restore ();
 					}), 0);
 				}
-				if (!(self._onPageRefreshed == null)) {
+				if (self._onPageRefreshed != null) {
 					self._onPageRefreshed ();
 				}
 			});},
@@ -2651,6 +2670,25 @@ function pagedList () {
 					self.getData (self.receiveData.CurrentPage, fullPage);
 				}
 			});},
+			get refreshItem () {return __get__ (this, function (self, item, newItem) {
+				if (typeof newItem == 'undefined' || (newItem != null && newItem .hasOwnProperty ("__kwargtrans__"))) {;
+					var newItem = null;
+				};
+				var r = self.getRow (item);
+				if (r != null) {
+					r.refresh (newItem);
+				}
+			});},
+			get getRow () {return __get__ (this, function (self, item) {
+				var __iterable0__ = self.rows;
+				for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
+					var row = __iterable0__ [__index0__];
+					if (item == row.item) {
+						return row;
+					}
+				}
+				return null;
+			});},
 			get getServer () {return __get__ (this, function (self) {
 				return self._server;
 			});},
@@ -2683,16 +2721,6 @@ function pagedList () {
 			});},
 			get removeRowListener () {return __get__ (this, function (self, event, func) {
 				self.tbody.element.removeEventListener (event, func, false);
-			});},
-			get getRow () {return __get__ (this, function (self, item) {
-				var __iterable0__ = self.rows;
-				for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-					var row = __iterable0__ [__index0__];
-					if (item == row.item) {
-						return row;
-					}
-				}
-				return null;
 			});}
 		});
 		var PagedListStyling = __class__ ('PagedListStyling', [object], {

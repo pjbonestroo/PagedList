@@ -185,6 +185,7 @@ class PagedList(ElementWrapper):
         self.pageSize = 20  # default value
         self.mergeButtonColumns = False
         self._onPageRefreshed = None
+        self._onPageRefreshing = None
         self.refreshDelayer = Delayer(500) # to make sure the refresh function does not get called too many times (for example caused by callbacks on server triggers)
         self.styling = PagedListStyling(self)
         self.styling.tableClass('table table-striped table-hover')
@@ -213,6 +214,15 @@ class PagedList(ElementWrapper):
             self._onPageRefreshed = None
         else:
             console.error(".onPageRefreshed on Paged-List for container with id {} failed. Passed argument is not a function.".format(self.containerId))
+        return self
+
+    def onPageRefreshing(self, func = None):
+        if typeof(func) == 'function':
+            self._onPageRefreshing = func
+        elif func == None:
+            self._onPageRefreshing = None
+        else:
+            console.error("._onPageRefreshing on Paged-List for container with id {} failed. Passed argument is not a function.".format(self.containerId))
         return self
     
     def addButton(self, id, name, styleClass):
@@ -303,6 +313,8 @@ class PagedList(ElementWrapper):
         # ReceiveData = { 'Items', 'CurrentPage', 'PageCount', 'TotalCount' }
         if not containsAll(data, PagedList.ReceiveData):
             console.error("Paged-List for container with id {} cannot render. Received data does not contain all required fields: {}.".format(self.containerId, PagedList.ReceiveData))
+        if self._onPageRefreshing != None:
+            self._onPageRefreshing()
         if data.CurrentPage > data.PageCount and data.PageCount > 0:
             self.getData(data.PageCount)
             return
@@ -356,7 +368,7 @@ class PagedList(ElementWrapper):
                 row.refreshPosition()
         if fullPage:
             setTimeout(lambda: scrollPosition.restore(), 0)
-        if not self._onPageRefreshed == None:
+        if self._onPageRefreshed != None:
             self._onPageRefreshed()
 
     def getData(self, page, fullPage = False):
@@ -385,6 +397,18 @@ class PagedList(ElementWrapper):
         else:
             self.getData(self.receiveData.CurrentPage, fullPage)
 
+    def refreshItem(self, item, newItem = None):
+        r = self.getRow(item)
+        if r != None:
+            r.refresh(newItem)
+
+    def getRow(self, item):
+        """ Return the row which contains item as data """
+        for row in self.rows: # type: PagedListRow
+            if item == row.item:
+                return row
+        return None
+
     def getServer(self):
         return self._server
 
@@ -411,13 +435,7 @@ class PagedList(ElementWrapper):
 
     def removeRowListener(self, event, func):
         self.tbody.element.removeEventListener(event, func, False)
-
-    def getRow(self, item):
-        """ Return the row which contains item as data """
-        for row in self.rows: # type: PagedListRow
-            if item == row.item:
-                return row
-        return None
+    
         
 class PagedListStyling():
 

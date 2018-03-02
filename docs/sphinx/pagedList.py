@@ -60,6 +60,12 @@ class PagedList():
         
         :return: this :any:`PagedList`
         """
+
+    def onPageRefreshing(self, func = None):
+        """ Place a callback function to be called before the list is refreshed. 
+        
+        :return: this :any:`PagedList`
+        """
     
     def addButton(self, id, name, styleClass):
         """ Add a button to this list. The button will possibly be placed in each row.
@@ -108,6 +114,14 @@ class PagedList():
         """ Refresh this list. This will cause the list to get the data for the current page, and update all values.
         
         :param fullPage: if false (default) all values will be updated, if true, all rows in the list will be re-rendered, and expanded rows will be removed.
+
+        """
+
+    def refreshItem(self, item, newItem = None):
+        """ Refresh the row which contains item. If item is not found, do nothing. 
+        
+        :param item: data of the row which must be refreshed
+        :param newItem: if given, replace item with newItem
 
         """
 
