@@ -1253,6 +1253,14 @@
 					if (itemValue == null) {
 						return false;
 					}
+					if (Object.prototype.toString.call (itemValue) == '[object Number]') {
+						if (py_isNaN (value)) {
+							return false;
+						}
+						else {
+							return itemValue == parseFloat (value);
+						}
+					}
 					var match = itemValue.toString ().toLowerCase ().indexOf (value.toString ().toLowerCase ());
 					return match > -(1);
 				};

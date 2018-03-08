@@ -1001,6 +1001,11 @@ class FakeServer(DataServer):
             itemValue = FakeServer.getNestedValue(item, field.split("."))
             if itemValue == None:
                 return False
+            if Object.prototype.toString.call(itemValue) == '[object Number]':
+                if isNaN(value):
+                    return False
+                else:
+                    return itemValue == parseFloat(value)
             # match = itemValue.toString().search(__new__(RegExp(value.toString(), "i"))) # problem: value can contain special characters so that regex does not work
             match = itemValue.toString().toLowerCase().indexOf(value.toString().toLowerCase())
             return match > -1 # must be regular expression

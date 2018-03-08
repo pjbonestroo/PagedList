@@ -1,5 +1,5 @@
 "use strict";
-// Transcrypt'ed from Python, 2018-03-02 08:05:40
+// Transcrypt'ed from Python, 2018-03-08 21:11:07
 function pagedList () {
     var __symbols__ = ['__py3.6__', '__esv5__'];
     var __all__ = {};
@@ -3407,6 +3407,14 @@ function pagedList () {
 					var itemValue = FakeServer.getNestedValue (item, field.py_split ('.'));
 					if (itemValue == null) {
 						return false;
+					}
+					if (Object.prototype.toString.call (itemValue) == '[object Number]') {
+						if (py_isNaN (value)) {
+							return false;
+						}
+						else {
+							return itemValue == parseFloat (value);
+						}
 					}
 					var match = itemValue.toString ().toLowerCase ().indexOf (value.toString ().toLowerCase ());
 					return match > -(1);
