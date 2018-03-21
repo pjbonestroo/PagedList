@@ -150,13 +150,14 @@ class PagedList():
         :return: :any:`AjaxServer`
         """
 
-    def addRowListener(self, event, func):
+    def addRowListener(self, event, func, useCapture):
         """ Attach an event to the body of the table. When the event gets triggered,
         the row is found which contains the event target. If any row is found,
         the function gets executed.
 
         :param event: event, for example: :code:`"dblclick"`
         :param func: function which accepts an item (data of one row) and (optional) an event.
+        :param useCapture: use event bubbling (default) or event capturing
         :return: function which is added as EventListener. Use this for :any:`removeRowListener`
 
         If this list contains buttons, be aware to take care of the event propagation.
@@ -172,11 +173,12 @@ class PagedList():
         
         """
 
-    def removeRowListener(self, event, func):
+    def removeRowListener(self, event, func, useCapture):
         """ Remove an event from the body of the table.
 
         :param event: event, for example: :code:`"dblclick"`
         :param func: function which is returned from :any:`addRowListener`
+        :param useCapture: must be same as used for :any:`addRowListener`
         """
 
 class PagedListStyling():

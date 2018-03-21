@@ -1,6 +1,5 @@
 call pyenv/Scripts/activate pyenv
 pause
-python -m pip install --upgrade transcrypt
-python -m pip install watchdog
-python -m pip install sphinx
+python -m pip install --upgrade pip pylint transcrypt
+python -m pip install watchdog sphinx
 pause

@@ -420,7 +420,7 @@ class PagedList(ElementWrapper):
         self._server = AjaxServer(url)
         return self._server
 
-    def addRowListener(self, event, func):
+    def addRowListener(self, event, func, useCapture: bool = False):
         def newFunction(ev):
             rowFound = None
             for row in self.rows:
@@ -430,11 +430,11 @@ class PagedList(ElementWrapper):
             if not rowFound == None:
                 func(rowFound.item, ev)
         result = newFunction
-        self.tbody.element.addEventListener(event, result, False)
+        self.tbody.element.addEventListener(event, result, useCapture)
         return result
 
-    def removeRowListener(self, event, func):
-        self.tbody.element.removeEventListener(event, func, False)
+    def removeRowListener(self, event, func, useCapture: bool = False):
+        self.tbody.element.removeEventListener(event, func, useCapture)
     
         
 class PagedListStyling():

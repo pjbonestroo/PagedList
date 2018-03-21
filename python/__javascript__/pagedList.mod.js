@@ -545,7 +545,10 @@
 				self._server = AjaxServer (url);
 				return self._server;
 			});},
-			get addRowListener () {return __get__ (this, function (self, event, func) {
+			get addRowListener () {return __get__ (this, function (self, event, func, useCapture) {
+				if (typeof useCapture == 'undefined' || (useCapture != null && useCapture .hasOwnProperty ("__kwargtrans__"))) {;
+					var useCapture = false;
+				};
 				var newFunction = function (ev) {
 					var rowFound = null;
 					var __iterable0__ = self.rows;
@@ -561,11 +564,14 @@
 					}
 				};
 				var result = newFunction;
-				self.tbody.element.addEventListener (event, result, false);
+				self.tbody.element.addEventListener (event, result, useCapture);
 				return result;
 			});},
-			get removeRowListener () {return __get__ (this, function (self, event, func) {
-				self.tbody.element.removeEventListener (event, func, false);
+			get removeRowListener () {return __get__ (this, function (self, event, func, useCapture) {
+				if (typeof useCapture == 'undefined' || (useCapture != null && useCapture .hasOwnProperty ("__kwargtrans__"))) {;
+					var useCapture = false;
+				};
+				self.tbody.element.removeEventListener (event, func, useCapture);
 			});}
 		});
 		var PagedListStyling = __class__ ('PagedListStyling', [object], {
