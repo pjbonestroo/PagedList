@@ -1,0 +1,21 @@
+{
+    "window.zoomLevel": 0,
+    "python.linting.pylintEnabled": true,
+    "python.linting.mypyEnabled": false,
+    "python.formatting.provider": "autopep8",
+    "python.formatting.autopep8Args": [
+        "--max-line-length 300"
+    ],
+    "editor.tabSize": 4,
+    "[python]": {},
+    "html.format.wrapLineLength": 0,
+    "html.format.indentInnerHtml": true,
+    "editor.detectIndentation": true,
+    "workbench.iconTheme": "vscode-icons",
+    "workbench.colorTheme": "Default Light+",
+    "workbench.editor.enablePreview": false,
+    "workbench.editor.enablePreviewFromQuickOpen": false,
+    "vsicons.dontShowNewVersionMessage": true,
+    "python.pythonPath": "${workspaceRoot}\\pyenv\\Scripts\\",
+    "python.autoComplete.extraPaths": ["${workspaceRoot}\\python\\stubs"]
+}

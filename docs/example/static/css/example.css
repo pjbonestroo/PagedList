@@ -32,3 +32,18 @@
 .subPagedListTd {
     background-color: #7AA5CC; /*transparent; */ /* #a5b9cc; */ /*  #7AA5CC;  */
 }
+
+/** 
+To make the tbody scrollable, add the following 2 selectors:
+*/
+
+/* tbody {
+    display:block;
+    height:200px;
+    overflow:auto;
+}
+thead, tbody tr {
+    display:table;
+    width:100%;
+    table-layout:fixed;
+} */
