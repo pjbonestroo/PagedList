@@ -724,6 +724,7 @@ class PagedListColumn():
         self.stylesHeaderSpan = [] # html styles to use for the span in the header
         self.classesRows = ["pagedListColumnRow"] # html style classes to use for the data rows (for all rows, item independent)
         self.stylesRows = [] # html styles to use for the data rows (for all rows, item independent)
+        self.filterInputElement: ElementWrapper = None
 
     
     def addClassHeader(self, styleClass):
@@ -812,12 +813,14 @@ class PagedListColumn():
                     return S(element).val()
                 if self.filterItems == None or self.filterItems.length == 0:
                     input = Element('input').attr('width', '100%').attr('value', '').attr('placeholder', DefaultText.TextFilter)
+                    self.filterInputElement = input
                     result.append(input)
                     self.getValueFunction = getValue.bind(None, input.element)
                     S(input.element).bind('input', pagedList.getData.bind(None, 1, True))
                     # S(input.element).bindWithDelay('input', pagedList.getData.bind(None, 1, True), PagedList.Delay)
                 else:
                     select = Element('select').attr('width', '100%'); result.append(select)
+                    self.filterInputElement = select
                     def filterItemToOption(filterItem):
                         r = Element('option').attr('value', filterItem.Value)
                         r.element.innerHTML = filterItem.Text
