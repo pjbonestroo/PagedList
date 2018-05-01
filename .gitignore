@@ -1,3 +1,5 @@
 /pyenv/
 *.pyc
 .mypy_cache
+phrase.txt
+commit all.bat
