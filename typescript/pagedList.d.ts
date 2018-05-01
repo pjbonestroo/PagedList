@@ -23,8 +23,8 @@ export class PagedList {
     getServer(): DataServer;
     fakeServer(): FakeServer;
     ajaxServer(): AjaxServer;
-    addRowListener(event: string, func: Function): Function;
-    removeRowListener(event: string, func: Function): void;
+    addRowListener(event: string, func: Function, useCapture: boolean): Function;
+    removeRowListener(event: string, func: Function, useCapture: boolean): void;
 }
 
 export class PagedListStyling {

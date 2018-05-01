@@ -725,7 +725,6 @@ class PagedListColumn():
         self.classesRows = ["pagedListColumnRow"] # html style classes to use for the data rows (for all rows, item independent)
         self.stylesRows = [] # html styles to use for the data rows (for all rows, item independent)
         self.filterInputElement: ElementWrapper = None
-
     
     def addClassHeader(self, styleClass):
         self.classesHeader.append(styleClass)
