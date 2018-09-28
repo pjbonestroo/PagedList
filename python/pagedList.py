@@ -1,4 +1,7 @@
-version = "0.0.0.3"
+from delayer import Delayer
+from elements import ElementWrapper
+
+version = "0.0.0.5"
 
 __pragma__ ('alias', 'S', '$') # to use jQuery library with 'S' instead of '$'
 
@@ -39,83 +42,6 @@ def element(name):
  
 def Element(name):
     return ElementWrapper(element(name))
-
-class ElementWrapper():
-    def __init__(self, element):
-        if element == None:
-            raise Exception("ElementWrapper: element cannot be None")
-        self.element = element
-
-    def getElement(self):
-        return self.element
-     
-    def append(self, *others):
-        for o in others:
-            self.element.appendChild(o.element)
-        return self
-         
-    def attr(self, name, value):
-        self.element.setAttribute(name, value)
-        return self
-         
-    def refresh(self):
-        raise Exception("Needs to be implemented by sub-classes")
-    
-    def removeChilds(self):
-        while self.element.hasChildNodes():
-            self.element.removeChild(self.element.firstChild)
-    
-    def removeFromParent(self):
-        self.element.parentNode.removeChild(self.element)
-
-    def children(self):
-        return Array.prototype.slice.call(self.element.children)
-
-    def indexInParent(self):
-        return self.children().indexOf(self.element)
-
-    def insertBefore(self, newnode: 'ElementWrapper', existingnode: 'ElementWrapper'):
-        return self.element.insertBefore(newnode.element, existingnode.element)
-
-class Delayer():
-    """ Simple delayer to call functions not too many times in a certain timespan. """
-
-    def __init__(self, timespan):
-        self.timespan = timespan # timespan in milliseconds
-        self.lastTime = None # last time executed in milliseconds since 1970/01/01
-        self.functionHolder = None
-    
-    def now(self):
-        return __new__(Date()).getTime()
-
-    def execute(self, func):
-        """ Function func gets executed (without arguments) if no other funcion is executed for a certain timespan.
-        Otherwise the function is remembered and executed when the time is elapsed.
-        If other calls are done in the meantime, only the last function gets executed when time is elapsed.
-        If an other function call is just finished, this call will execute immediately.
-        """
-        if self.lastTime == None:
-            self.executeNow(func)
-        else:
-            waitTime = self.lastTime + self.timespan - self.now()
-            if waitTime < 0:
-                self.executeNow(func)
-            else:
-                if self.functionHolder == None:
-                    # place new timeout
-                    self.functionHolder = func
-                    def executeLater():
-                        self.executeNow(self.functionHolder)
-                        self.functionHolder = None
-                        self.lastTime = None
-                    setTimeout(executeLater, waitTime)
-                else:
-                    # hold new function for already placed timeout
-                    self.functionHolder = func
-
-    def executeNow(self, func):
-        self.lastTime = __new__(Date()).getTime()
-        func()
 
 #
 # Make object with attributes according fields

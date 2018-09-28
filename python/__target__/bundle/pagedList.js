@@ -93,7 +93,7 @@ pagedList =
 __webpack_require__.r(__webpack_exports__);
 
 // CONCATENATED MODULE: ./python/__target__/org.transcrypt.__runtime__.js
-// Transcrypt'ed from Python, 2018-09-28 10:05:45
+// Transcrypt'ed from Python, 2018-09-28 10:43:23
 var __name__ = 'org.transcrypt.__runtime__';
 var __envir__ = {};
 __envir__.interpreter_name = 'python';
@@ -2212,77 +2212,12 @@ var print = __terminal__.print;
 var org_transcrypt_runtime_input = __terminal__.input;
 
 //# sourceMappingURL=org.transcrypt.__runtime__.map
-// CONCATENATED MODULE: ./python/__target__/pagedList.js
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "version", function() { return version; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "findIndex", function() { return findIndex; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ScrollPosition", function() { return ScrollPosition; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "scrollPosition", function() { return scrollPosition; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "element", function() { return pagedList_element; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Element", function() { return Element; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ElementWrapper", function() { return ElementWrapper; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Delayer", function() { return Delayer; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "namedTuple", function() { return namedTuple; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "containsAll", function() { return containsAll; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "containsMore", function() { return containsMore; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DefaultButtons", function() { return DefaultButtons; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addDefaultButton", function() { return addDefaultButton; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DefaultText", function() { return DefaultText; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PagedList", function() { return PagedList; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PagedListStyling", function() { return PagedListStyling; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PagedListRow", function() { return PagedListRow; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PagedListSubRow", function() { return PagedListSubRow; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PagedListButton", function() { return PagedListButton; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PagedListColumn", function() { return PagedListColumn; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Pager", function() { return Pager; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DataServer", function() { return DataServer; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AjaxServer", function() { return AjaxServer; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FakeServer", function() { return FakeServer; });
-// Transcrypt'ed from Python, 2018-09-28 10:05:45
+// CONCATENATED MODULE: ./python/__target__/elements.js
+// Transcrypt'ed from Python, 2018-09-28 10:43:23
 
-var pagedList_name_ = '__main__';
-var version = '0.0.0.3';
-if (!(Array.prototype.findIndex)) {
-	Array.prototype.findIndex = (function __lambda__ (func) {
-		return findIndex (this, func);
-	});
-}
-var findIndex = function (array, func) {
-	var i = 0;
-	while (i < array.length) {
-		if (func (array [i])) {
-			return i;
-		}
-		i++;
-	}
-	return -(1);
-};
-var ScrollPosition =  __class__ ('ScrollPosition', [object], {
-	__module__: pagedList_name_,
-	get left () {return __get__ (this, function (self) {
-		var doc = document.documentElement;
-		return (window.pageXOffset || doc.scrollLeft) - (doc.clientLeft || 0);
-	});},
-	get top () {return __get__ (this, function (self) {
-		var doc = document.documentElement;
-		return (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
-	});},
-	get save () {return __get__ (this, function (self) {
-		self._left = self.left ();
-		self._top = self.top ();
-	});},
-	get restore () {return __get__ (this, function (self) {
-		window.scrollTo (self._left, self._top);
-	});}
-});
-var scrollPosition = ScrollPosition ();
-var pagedList_element = function (py_name) {
-	return document.createElement (py_name);
-};
-var Element = function (py_name) {
-	return ElementWrapper (pagedList_element (py_name));
-};
+var elements_name_ = 'elements';
 var ElementWrapper =  __class__ ('ElementWrapper', [object], {
-	__module__: pagedList_name_,
+	__module__: elements_name_,
 	get __init__ () {return __get__ (this, function (self, element) {
 		if (element == null) {
 			var __except0__ = Exception ('ElementWrapper: element cannot be None');
@@ -2328,8 +2263,14 @@ var ElementWrapper =  __class__ ('ElementWrapper', [object], {
 		return self.element.insertBefore (newnode.element, existingnode.element);
 	});}
 });
+
+//# sourceMappingURL=elements.map
+// CONCATENATED MODULE: ./python/__target__/delayer.js
+// Transcrypt'ed from Python, 2018-09-28 10:43:23
+
+var delayer_name_ = 'delayer';
 var Delayer =  __class__ ('Delayer', [object], {
-	__module__: pagedList_name_,
+	__module__: delayer_name_,
 	get __init__ () {return __get__ (this, function (self, timespan) {
 		self.timespan = timespan;
 		self.lastTime = null;
@@ -2362,10 +2303,117 @@ var Delayer =  __class__ ('Delayer', [object], {
 		}
 	});},
 	get executeNow () {return __get__ (this, function (self, func) {
-		self.lastTime = new Date ().getTime ();
+		self.lastTime = self.now ();
 		func ();
 	});}
 });
+var Delayer2 =  __class__ ('Delayer2', [object], {
+	__module__: delayer_name_,
+	get __init__ () {return __get__ (this, function (self, timespan, resetDelay) {
+		if (typeof resetDelay == 'undefined' || (resetDelay != null && resetDelay.hasOwnProperty ("__kwargtrans__"))) {;
+			var resetDelay = false;
+		};
+		self.timespan = timespan;
+		self.resetDelay = resetDelay;
+		self.lastTimeout = null;
+		self.hitTime = null;
+	});},
+	get now () {return __get__ (this, function (self) {
+		return new Date ().getTime ();
+	});},
+	get execute () {return __get__ (this, function (self, func) {
+		var execute_ = function (f) {
+			f ();
+			self.lastTimeout = null;
+		};
+		if (self.lastTimeout == null) {
+			self.lastTimeout = setTimeout (execute_.bind (null, func), self.timespan);
+			self.hitTime = self.now ();
+		}
+		else {
+			clearTimeout (self.lastTimeout);
+			var timeLeft = 0.0;
+			if (self.resetDelay) {
+				var timeLeft = self.timespan;
+			}
+			else {
+				var timeLeft = Math.max (0, self.timespan - (self.now () - self.hitTime));
+			}
+			self.lastTimeout = setTimeout (execute_.bind (null, func), timeLeft);
+		}
+	});}
+});
+
+//# sourceMappingURL=delayer.map
+// CONCATENATED MODULE: ./python/__target__/pagedList.js
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "version", function() { return version; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "findIndex", function() { return findIndex; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ScrollPosition", function() { return ScrollPosition; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "scrollPosition", function() { return scrollPosition; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "element", function() { return pagedList_element; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Element", function() { return Element; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "namedTuple", function() { return namedTuple; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "containsAll", function() { return containsAll; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "containsMore", function() { return containsMore; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DefaultButtons", function() { return DefaultButtons; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addDefaultButton", function() { return addDefaultButton; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DefaultText", function() { return DefaultText; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PagedList", function() { return PagedList; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PagedListStyling", function() { return PagedListStyling; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PagedListRow", function() { return PagedListRow; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PagedListSubRow", function() { return PagedListSubRow; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PagedListButton", function() { return PagedListButton; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PagedListColumn", function() { return PagedListColumn; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Pager", function() { return Pager; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DataServer", function() { return DataServer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AjaxServer", function() { return AjaxServer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FakeServer", function() { return FakeServer; });
+// Transcrypt'ed from Python, 2018-09-28 10:43:23
+
+
+
+var pagedList_name_ = '__main__';
+var version = '0.0.0.5';
+if (!(Array.prototype.findIndex)) {
+	Array.prototype.findIndex = (function __lambda__ (func) {
+		return findIndex (this, func);
+	});
+}
+var findIndex = function (array, func) {
+	var i = 0;
+	while (i < array.length) {
+		if (func (array [i])) {
+			return i;
+		}
+		i++;
+	}
+	return -(1);
+};
+var ScrollPosition =  __class__ ('ScrollPosition', [object], {
+	__module__: pagedList_name_,
+	get left () {return __get__ (this, function (self) {
+		var doc = document.documentElement;
+		return (window.pageXOffset || doc.scrollLeft) - (doc.clientLeft || 0);
+	});},
+	get top () {return __get__ (this, function (self) {
+		var doc = document.documentElement;
+		return (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
+	});},
+	get save () {return __get__ (this, function (self) {
+		self._left = self.left ();
+		self._top = self.top ();
+	});},
+	get restore () {return __get__ (this, function (self) {
+		window.scrollTo (self._left, self._top);
+	});}
+});
+var scrollPosition = ScrollPosition ();
+var pagedList_element = function (py_name) {
+	return document.createElement (py_name);
+};
+var Element = function (py_name) {
+	return ElementWrapper (pagedList_element (py_name));
+};
 var namedTuple = function (fields, py_values) {
 	if (typeof py_values == 'undefined' || (py_values != null && py_values.hasOwnProperty ("__kwargtrans__"))) {;
 		var py_values = null;
