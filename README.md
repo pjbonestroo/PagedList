@@ -27,11 +27,11 @@ Add dependencies to your html file:
 - jQuery (required) <https://jquery.com/>
 - Bootstrap (optional) <http://getbootstrap.com/>
 
-Add `pagedList.min.js` or `pagedList.js` to your html file, like:
+Add `pagedList.js` to your html file, like:
 ```
-<script src="pagedList.min.js"></script>`
+<script src="pagedList.js"></script>`
 ```
-The Javascript files can be found in the `python/__javascript__/` folder.
+The Javascript files can be found in the `python/__target__/` folder.
 
 Code examples
 =============
