@@ -1,48 +1,47 @@
-# standard lib
-import sys
-import time
+import logging
 import os
 import shutil
-import logging
 import subprocess
+import sys
+import time
 from pathlib import Path
-# externals
-from watchdog.observers import Observer
+
 from watchdog.events import FileSystemEventHandler
+from watchdog.observers import Observer
 
-modulename = 'pagedList'
+moduleName = 'pagedList'
 
-def copyJs():
+def executeFile(filename):
     try:
-        mainDir = os.path.dirname(os.path.realpath(__file__))
-        
-        print("Copy pagedList.js to docs/example/static/js")
-        shutil.copy(os.path.join(mainDir, "python", "__javascript__", "pagedList.js"), os.path.join(str(mainDir), "docs", "example", 'static', 'js'))
-        shutil.copy(os.path.join(mainDir, "python", "__javascript__", "pagedList.min.js"), os.path.join(str(mainDir), "docs", "example", 'static', 'js'))
-
-    except:
-        print("Copy failed")
+        p = subprocess.Popen(args="cmd.exe /k", stdin=subprocess.PIPE, stderr=None)
+        command = f'call "{filename}"\n'
+        p.stdin.write(command.encode('utf-8'))
+        stdout_data, stderr_data = p.communicate(timeout=10)
+        print(stdout_data)
+        p.stdin.close()
+        p.wait(timeout=3)
+    except Exception as e:
+        print("Something went wrong")
+        print(e)
 
 class CompileEventHandler(FileSystemEventHandler):
     def __init__(self):
-        self.lastTime = time.time()
-        self.timespan = 2.0 # minimum time [s] needed between filesystem events, to trigger compilation
+        self.timespan = 2.0 # minimum time needed between filesystem events, to trigger compilation
+        self.lastTime = time.time() - self.timespan * 2.0
 
     def on_any_event(self, event):
         if time.time() > self.lastTime + self.timespan:
             os.system('cls') # clear screen
             print(f"Compiling (at {time.strftime('%H:%M:%S', time.localtime(time.time()))})")
             # note: gets automatically called from current virtual environment:
-            if True:
-                r = subprocess.Popen(args=f"transcrypt python/{modulename}.py", stdout=subprocess.PIPE)
-            else:
-                r = subprocess.Popen(args=f"transcrypt -n python/{modulename}.py", stdout=subprocess.PIPE)
+            args = ''
+            r = subprocess.Popen(args=f"transcrypt --build --nomin --map python/{moduleName}", stdout=subprocess.PIPE)
             r.wait()
             returncode = r.returncode
-            #returncode = os.system(f'transcrypt -n python/{modulename}.py')
             if returncode == 0:
                 print("Success")
-                copyJs()
+                executeFile("5 webpack bundle.bat")
+                executeFile("5b build.bat")
             else:
                 for line in r.stdout:
                     print("".join(line.decode("utf-8").split("\n")))
@@ -52,8 +51,11 @@ class CompileEventHandler(FileSystemEventHandler):
 if __name__ == "__main__":
     path = os.path.join('.', 'python')
     event_handler = CompileEventHandler()
+    # fire directly:
+    event_handler.on_any_event(None)
+    
     observer = Observer()
-    observer.schedule(event_handler, path, recursive=False) # TODO: exclude __javascript__ folder for watching changes
+    observer.schedule(event_handler, path, recursive=False) # todo: make sure __target__ folder is not watched
     observer.start()
     print("Listening for file-system events")
     try:
@@ -63,11 +65,3 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         observer.stop()
     observer.join()
-
-
-    
-   
-
-
-    
-    
