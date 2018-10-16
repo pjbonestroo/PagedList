@@ -886,6 +886,7 @@ class FakeServer(DataServer):
     def __init__(self):
         DataServer.__init__(self)
         self.data = []
+        self.dataFiltered = []
 
     def getMaxId(self):
         result = 0
@@ -979,6 +980,7 @@ class FakeServer(DataServer):
         page = nrOfPages if data.page > nrOfPages else 1 if data.page < 1 else data.page
         indexFrom = (page - 1) * data.pageSize
         indexTo = indexFrom + data.pageSize
+        self.dataFiltered = items
         items = items[indexFrom : indexTo]
         #
         result = {}
