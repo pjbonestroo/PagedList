@@ -843,7 +843,7 @@ class Pager(ElementWrapper):
                     if i == currentPage:
                         li.attr('class', self.activeClass)
                     i += 1
-                if startPage + maxPages < pageCount:
+                if startPage + maxPages <= pageCount:
                     self.addNumber(startPage + maxPages, ">")
                     self.addNumber(pageCount, ">>")
     
